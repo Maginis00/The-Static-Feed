@@ -3,19 +3,19 @@ use bevy::color::palettes::css::DARK_GRAY;
 
 use crate::states::GameStates;
 
-pub struct HandyPlugin;
+pub struct PhonePlugin;
 
-impl Plugin for HandyPlugin {
+impl Plugin for PhonePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, spawn_handy_ui)
-            .add_systems(Update, handle_handy_input.run_if(in_state(GameStates::Erkunden).or(in_state(GameStates::HandyOffen))));
+        app.add_systems(Startup, spawn_phone_ui)
+            .add_systems(Update, handle_phone_input.run_if(in_state(GameStates::Explore).or(in_state(GameStates::PhoneOpen))));
     }
 }
 
 #[derive(Component)]
-struct HandyRootNode;
+struct PhoneRootNode;
 
-fn spawn_handy_ui(mut commands: Commands) {
+fn spawn_phone_ui(mut commands: Commands) {
      commands.spawn((
         Node {
             width: Val::Percent(30.),
@@ -26,28 +26,28 @@ fn spawn_handy_ui(mut commands: Commands) {
         },
         
         BackgroundColor(DARK_GRAY.into()),
-        HandyRootNode,
+        PhoneRootNode,
         Visibility::Hidden,
-        Name::new("Handy"),
+        Name::new("Phone"),
     ));
 }
 
-fn handle_handy_input(
+fn handle_phone_input(
     input: Res<ButtonInput<KeyCode>>,
     current_state: Res<State<GameStates>>,
     mut next_state: ResMut<NextState<GameStates>>,
-    mut query: Query<&mut Visibility, With<HandyRootNode>>,
+    mut query: Query<&mut Visibility, With<PhoneRootNode>>,
 ) {
     if input.just_pressed(KeyCode::KeyH) {
         let mut visibility = query.single_mut();
 
         match current_state.get() {
-            GameStates::Erkunden => {
-                next_state.set(GameStates::HandyOffen);
+            GameStates::Explore => {
+                next_state.set(GameStates::PhoneOpen);
                 *visibility = Visibility::Visible;
             }
-            GameStates::HandyOffen => {
-                next_state.set(GameStates::Erkunden);
+            GameStates::PhoneOpen => {
+                next_state.set(GameStates::Explore);
                 *visibility = Visibility::Hidden;
             }
         }
