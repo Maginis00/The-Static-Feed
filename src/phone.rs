@@ -13,11 +13,10 @@ impl Plugin for PhonePlugin {
 }
 
 #[derive(Component)]
-struct PhoneRootNode;
+pub struct PhoneRootNode;
 
 fn spawn_phone_ui (
     mut commands: Commands,
-    asset_server: Res<AssetServer>
 )
 {
      commands.spawn((
@@ -33,14 +32,6 @@ fn spawn_phone_ui (
         PhoneRootNode,
         Visibility::Hidden,
         Name::new("Phone"),
-    ))
-    .with_child((
-        Name::new("Meme Container"),
-        ImageNode::new(asset_server.load("car.png")),
-        Node {
-            width: Val::Percent(100.),
-            ..default()
-        }
     ));
 }
 

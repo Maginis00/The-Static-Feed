@@ -4,6 +4,7 @@ use bevy_inspector_egui::quick::WorldInspectorPlugin;
 mod player;
 mod states;
 mod phone;
+mod feed;
 
 fn main() {
     App::new()
@@ -18,7 +19,13 @@ fn main() {
         )
         .init_state::<states::GameStates>()
         .add_plugins(player::PlayerPlugin)
-        .add_plugins(phone::PhonePlugin)
+
+        // phone stuff
+        .add_plugins((
+            phone::PhonePlugin,
+            feed::FeedPlugin,
+        ))
+
         .add_plugins(WorldInspectorPlugin::new())
         .add_systems(Startup, setup_camera)
         .run();

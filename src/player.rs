@@ -25,5 +25,6 @@ fn spawn_player(
             ,..default()
         },
         Name::new("Player"),
+        Visibility::Hidden,
     ));
 }
