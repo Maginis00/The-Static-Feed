@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::states::GameStates;
-use crate::phone::PhoneRootNode;
+use crate::phone::PhoneFeedNode;
 
 pub struct FeedPlugin;
 
@@ -23,14 +23,23 @@ struct MemeCollection {
 
 #[derive(Resource, Default)]
 pub struct FeedState {
-    current_meme_entity: Option<Entity>
+    current_meme_entity: Handle<Image>
 }
 
 fn load_meme_assets(
     asset_server: Res<AssetServer>,
-    meme_collection: Res<MemeCollection>
+    mut meme_collection: ResMut<MemeCollection>,
+    mut feed_state: ResMut<FeedState>,
 ) {
-    
+    let handles = vec![
+        asset_server.load("car.png"),
+    ];
+
+    meme_collection.handles = handles;
+
+    if let Some(first_handle) = meme_collection.handles.get(0) {
+        feed_state.current_meme_entity = first_handle.clone();
+    }
 }
 
 fn handle_feed_scrolling(
@@ -40,14 +49,12 @@ fn handle_feed_scrolling(
 }
 
 fn update_feed_display(
-    mut commands: Commands,
-    phone_query: Query<Entity, With<PhoneRootNode>>,
+    phone_feed_query: Query<&mut Node, With<PhoneFeedNode>>,
     feed_state: ResMut<FeedState>,
     meme_collection: Res<MemeCollection>,
 
 ) {
-    if let Ok(phone_entity) = phone_query.get_single() {
-        
-        
-    }
+    //if let Ok(mut feed_node) = phone_feed_query.get_single() {
+    //    *feed_node.Image = feed_state.current_meme_entity.clone();
+    //}
 }

@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy::color::palettes::css::DARK_GRAY;
+use bevy::color::palettes::css::WHITE;
 
 use crate::states::GameStates;
 
@@ -14,6 +15,9 @@ impl Plugin for PhonePlugin {
 
 #[derive(Component)]
 pub struct PhoneRootNode;
+
+#[derive(Component)]
+pub struct PhoneFeedNode;
 
 fn spawn_phone_ui (
     mut commands: Commands,
@@ -31,7 +35,18 @@ fn spawn_phone_ui (
         BackgroundColor(DARK_GRAY.into()),
         PhoneRootNode,
         Visibility::Hidden,
-        Name::new("Phone"),
+        Name::new("Phone")
+    )).with_child((
+        Node {
+            width: Val::Percent(100.),
+            height: Val::Percent(60.),
+            align_self: AlignSelf::Center,
+            ..default()
+        },
+
+        BackgroundColor(WHITE.into()),
+        Name::new("APP child"),
+        PhoneFeedNode,
     ));
 }
 
